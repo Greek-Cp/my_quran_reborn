@@ -40,87 +40,99 @@ class _BacaSuratState extends State<BacaSurat> with TickerProviderStateMixin {
     detailSurat =
         ControllerAPI.fetchDataDetailSurat(noSurat: nomorSurat.toString());
     return Scaffold(
+        backgroundColor: Colors.black,
         body: CustomScrollView(slivers: <Widget>[
-      SliverAppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => {Navigator.pop(context)},
-        ),
-        shadowColor: ColorApp.colorPurpler,
-        snap: false,
-        floating: true,
-        stretch: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: ColorApp.colorPurpler,
-        pinned: true,
-        expandedHeight: 180,
-        flexibleSpace: FlexibleSpaceBar(
-          title: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: TextComponent.TextTittleJuz("Surat ${namaSurat}",
-                colors: Colors.white),
-          ),
-          titlePadding: EdgeInsetsDirectional.only(start: 50.0, bottom: 20.0),
-          collapseMode: CollapseMode.parallax,
-        ),
-      ),
-      SliverList(
-        delegate: SliverChildListDelegate([
-          Padding(
-            padding: const EdgeInsets.only(left: 30, top: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextTittleJuzPembuka(
-                  "ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم",
-                ),
-                TextDescriptionAyat("bismillāhir-raḥmānir-raḥīm(i)",
-                    colors: Colors.black),
-                TextDescriptionArti(
-                    "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang",
-                    colors: Colors.grey),
-                SizedBox(
-                  height: 30,
-                )
-              ],
+          SliverAppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: () => {Navigator.pop(context)},
+            ),
+            snap: false,
+            floating: true,
+            stretch: true,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: ColorApp.colorPurpler,
+            pinned: true,
+            expandedHeight: 180,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Image.asset(
+                "assets/ic_sky.png",
+                fit: BoxFit.cover,
+              ),
+              title: Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: TextComponent.TextTittleJuz("Surat ${namaSurat}",
+                    colors: Colors.white),
+              ),
+              titlePadding:
+                  EdgeInsetsDirectional.only(start: 50.0, bottom: 20.0),
+              collapseMode: CollapseMode.parallax,
             ),
           ),
-          Padding(
-              padding: EdgeInsets.only(left: 30, right: 30),
-              child: Column(
-                  mainAxisSize: MainAxisSize.max,
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.only(left: 30, top: 30),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder<DetailSurat>(
-                        future: detailSurat,
-                        builder: (context, snapshot) {
-                          DetailSurat? detailSurat = snapshot.data;
-                          if (snapshot.hasData) {
-                            List<Ayat>? listAyat = detailSurat!.data!.ayat;
-                            listAyat!.removeAt(0);
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: detailSurat!.data!.ayat!.length,
-                              itemBuilder: (context, index) {
-                                return WidgetSurat(
-                                    nomorAyat: index.toString(),
-                                    arti: listAyat![index].teksIndonesia,
-                                    ayat: listAyat![index].teksArab,
-                                    latin: listAyat![index].teksLatin,
-                                    urlSuaraBacaan:
-                                        listAyat![index].audio!.s01.toString());
-                              },
-                            );
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                        })
-                  ])),
-        ]),
-      )
-    ]));
+                    TextTittleJuzPembuka(
+                        "ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم",
+                        colors: Colors.white),
+                    TextDescriptionAyat("bismillāhir-raḥmānir-raḥīm(i)",
+                        colors: Colors.white),
+                    TextDescriptionArti(
+                        "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang",
+                        colors: Colors.grey),
+                    SizedBox(
+                      height: 30,
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FutureBuilder<DetailSurat>(
+                            future: detailSurat,
+                            builder: (context, snapshot) {
+                              DetailSurat? detailSurat = snapshot.data;
+                              if (snapshot.hasData) {
+                                List<Ayat>? listAyat = detailSurat!.data!.ayat;
+                                listAyat!.removeAt(0);
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: detailSurat!.data!.ayat!.length,
+                                  itemBuilder: (context, index) {
+                                    return WidgetSurat(
+                                        nomorAyat: index.toString(),
+                                        arti: listAyat![index].teksIndonesia,
+                                        ayat: listAyat![index].teksArab,
+                                        latin: listAyat![index].teksLatin,
+                                        urlSuaraBacaan: listAyat![index]
+                                            .audio!
+                                            .s01
+                                            .toString());
+                                  },
+                                );
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            })
+                      ])),
+            ]),
+          )
+        ]));
   }
 
   static Widget TextTittleJuz(String name,
@@ -196,7 +208,7 @@ class _BacaSuratState extends State<BacaSurat> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Card(
-          color: Color.fromARGB(235, 249, 245, 253),
+          color: Color.fromARGB(235, 246, 241, 251),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Column(children: [
@@ -261,7 +273,7 @@ class _BacaSuratState extends State<BacaSurat> with TickerProviderStateMixin {
               alignment: Alignment.centerRight,
               child: TextTittleJuz(
                 "${ayat}",
-                colors: Colors.black,
+                colors: Colors.white,
               )),
         ),
         Padding(
@@ -269,7 +281,7 @@ class _BacaSuratState extends State<BacaSurat> with TickerProviderStateMixin {
           child: Align(
               alignment: Alignment.topLeft,
               child: TextComponent.TextDescriptionJuz("${latin}",
-                  colors: Colors.black)),
+                  colors: Colors.blueGrey)),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 0, bottom: 20),
